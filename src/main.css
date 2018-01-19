@@ -1,15 +1,53 @@
-body {
-  font-family: 'Source Sans Pro', 'Trebuchet MS', 'Lucida Grande', 'Bitstream Vera Sans', 'Helvetica Neue', sans-serif;
+* {
   margin: 0;
-  text-align: center;
-  color: #293c4b;
+  padding: 0;
+}
+
+body {
+  font-family: "Source Sans Pro", "Trebuchet MS", "Lucida Grande",
+    "Bitstream Vera Sans", "Helvetica Neue", sans-serif;
+  margin: 0;
+  padding: 30px;
+  color: #3f4a57;
+  background: #f4f6fa;
 }
 
 h1 {
   font-size: 30px;
 }
 
-img {
+li {
+  list-style-type: none;
+}
+
+.weekly-report {
+  margin-bottom: 20px;
+}
+
+.cards {
+  display: flex;
+}
+
+.card {
+  width: 300px;
+  margin-right: 20px;
+  background: #ffffff;
+  box-shadow: 0 20px 40px 0 #d5dae4;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.card__header {
+  padding: 15px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background: #6081e7;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.card__body {
   margin: 20px 0;
-  max-width: 200px;
+  font-size: 75px;
 }
