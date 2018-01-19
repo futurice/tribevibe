@@ -21,10 +21,10 @@ decodeWeeklyReport =
         |> required "metricsValues" (Decode.list decodeMetricsValue)
 
 
-decodeMetricsValue : Decoder MetricValue
+decodeMetricsValue : Decoder MetricsValue
 decodeMetricsValue =
     decode
-        MetricValue
+        MetricsValue
         |> required "id" Decode.string
         |> required "displayName" Decode.string
         |> required "value" Decode.float

@@ -1,7 +1,7 @@
 module Types exposing (..)
 
 
-type alias MetricValue =
+type alias MetricsValue =
     { id : String
     , displayName : String
     , value : Float
@@ -11,7 +11,7 @@ type alias MetricValue =
 type alias WeeklyReport =
     { groupName : String
     , date : String
-    , metricsValues : List MetricValue
+    , metricsValues : List MetricsValue
     }
 
 
@@ -23,3 +23,8 @@ type alias WeeklyReports =
 type alias Model =
     { weeklyReports : WeeklyReports
     }
+
+
+interestingMetrics : List String
+interestingMetrics =
+    [ "MG-2", "MG-7", "MG-1" ]

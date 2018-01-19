@@ -1,9 +1,10 @@
 module Main exposing (..)
 
-import Html exposing (Html, text, div, h1, p)
+import Html exposing (Html, text, div, h1)
 import Types exposing (..)
 import Commands exposing (getWeeklyReports)
 import Messages exposing (..)
+import Views exposing (metricValues)
 
 
 initialModel =
@@ -30,6 +31,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ h1 [] [ text "Tribevibe" ]
+        , metricValues model.weeklyReports.weeklyReports
         ]
 
 
