@@ -23,6 +23,7 @@ type alias Reply =
 type alias Feedback =
     { dateCreated : String
     , question : String
+    , answer : String
     , tags : List String
     , replies : List Reply
     }

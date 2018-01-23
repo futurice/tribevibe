@@ -75,3 +75,16 @@ li {
   margin: 20px 0;
   font-size: 75px;
 }
+
+.feedback {
+  padding: 20px;
+  text-align: left;
+}
+
+.feedback__question {
+  margin-bottom: 20px;
+}
+
+.feedback__answer {
+  margin-bottom: 20px;
+}

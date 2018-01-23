@@ -1,6 +1,6 @@
 module Views exposing (..)
 
-import Html exposing (Html, text, ul, li, p, div)
+import Html exposing (Html, text, ul, li, h2, h3, p, div)
 import Html.Attributes exposing (class)
 import Types exposing (..)
 import Messages exposing (..)
@@ -37,10 +37,10 @@ viewDashboard dashboard =
         Just dashboard ->
             div [ class "dashboard" ]
                 [ div [ class "dashboard__top" ]
-                    [ div [ class "plot card card--big" ] [ text "Here lives the graph!" ]
-                    , div [ class "feedback card card--big" ] [ text "Here lives the feedback!" ]
+                    [ div [ class "card card--big" ] [ text "Here lives the graph!" ]
+                    , div [ class "card card--big" ] [ viewFeedback dashboard.feedback ]
                     ]
-                , ul [ class "dashboard__bottom metrics" ] (List.map viewMetric (List.filter allButEngagement dashboard.metrics))
+                , ul [ class "dashboard__bottom" ] (List.map viewMetric (List.filter allButEngagement dashboard.metrics))
                 ]
 
 
@@ -50,6 +50,21 @@ viewMetric metric =
         [ div [ class "card__header" ] [ text metric.name ]
         , div [ class "card__body" ] [ text (lastWithEmoji metric.values) ]
         ]
+
+
+viewFeedback : Feedback -> Html Msg
+viewFeedback feedback =
+    div [ class "feedback" ]
+        [ h2 [ class "feedback__question" ] [ text feedback.question ]
+        , p [ class "feedback__answer" ] [ text feedback.answer ]
+        , h3 [ class "feedback__replies-title" ] [ text "Replies" ]
+        , ul [ class "feedback__replies" ] (List.map viewReply feedback.replies)
+        ]
+
+
+viewReply : Reply -> Html Msg
+viewReply reply =
+    li [ class "feedback__reply" ] [ text reply.message ]
 
 
 viewError : Maybe String -> Html Msg

@@ -31,6 +31,7 @@ decodeFeedback =
         Feedback
         |> required "dateCreated" Decode.string
         |> required "question" Decode.string
+        |> required "answer" Decode.string
         |> required "tags" (Decode.list Decode.string)
         |> required "replies" (Decode.list decodeReply)
 
