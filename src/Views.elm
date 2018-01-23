@@ -37,8 +37,8 @@ viewDashboard dashboard =
         Just dashboard ->
             div [ class "dashboard" ]
                 [ div [ class "dashboard__top" ]
-                    [ div [ class "card card--big" ] [ text "Here lives the graph!" ]
-                    , div [ class "card card--big" ] [ viewFeedback dashboard.feedback ]
+                    [ div [ class "card card--big card--graph" ] [ text "Here lives the graph!" ]
+                    , div [ class "card card--big card--feedback" ] [ viewFeedback dashboard.feedback ]
                     ]
                 , ul [ class "dashboard__bottom" ] (List.map viewMetric (List.filter allButEngagement dashboard.metrics))
                 ]
@@ -55,7 +55,7 @@ viewMetric metric =
 viewFeedback : Feedback -> Html Msg
 viewFeedback feedback =
     div [ class "feedback" ]
-        [ h2 [ class "feedback__question" ] [ text feedback.question ]
+        [ h3 [ class "feedback__question" ] [ text feedback.question ]
         , p [ class "feedback__answer" ] [ text feedback.answer ]
         , h3 [ class "feedback__replies-title" ] [ text "Replies" ]
         , ul [ class "feedback__replies" ] (List.map viewReply feedback.replies)
