@@ -5,26 +5,39 @@ import Json.Decode.Pipeline exposing (decode, required, requiredAt)
 import Types exposing (..)
 
 
-decodeWeeklyReports : Decoder WeeklyReports
-decodeWeeklyReports =
+-- Dashboard decoders
+
+
+decodeDashboard : Decoder Dashboard
+decodeDashboard =
     decode
-        WeeklyReports
-        |> requiredAt [ "data", "weeklyReports" ] (Decode.list decodeWeeklyReport)
+        Dashboard
+        |> required "metrics" (Decode.list decodeMetricValue)
+        |> required "feedback" decodeFeedback
 
 
-decodeWeeklyReport : Decoder WeeklyReport
-decodeWeeklyReport =
+decodeMetricValue : Decoder Metric
+decodeMetricValue =
     decode
-        WeeklyReport
-        |> required "groupName" Decode.string
-        |> required "date" Decode.string
-        |> required "metricsValues" (Decode.list decodeMetricsValue)
-
-
-decodeMetricsValue : Decoder MetricsValue
-decodeMetricsValue =
-    decode
-        MetricsValue
+        Metric
         |> required "id" Decode.string
-        |> required "displayName" Decode.string
-        |> required "value" Decode.float
+        |> required "name" Decode.string
+        |> required "values" (Decode.list Decode.float)
+
+
+decodeFeedback : Decoder Feedback
+decodeFeedback =
+    decode
+        Feedback
+        |> required "dateCreated" Decode.string
+        |> required "question" Decode.string
+        |> required "tags" (Decode.list Decode.string)
+        |> required "replies" (Decode.list decodeReply)
+
+
+decodeReply : Decoder Reply
+decodeReply =
+    decode
+        Reply
+        |> required "dateCreated" Decode.string
+        |> required "message" Decode.string

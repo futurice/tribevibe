@@ -2,37 +2,61 @@ module Views exposing (..)
 
 import Html exposing (Html, text, ul, li, p, div)
 import Html.Attributes exposing (class)
-import Types exposing (WeeklyReport, MetricsValue, interestingMetrics)
+import Types exposing (..)
 import Messages exposing (..)
 
 
-isInteresting : MetricsValue -> Bool
-isInteresting value =
-    List.member value.id interestingMetrics
+lastWithEmoji : List Float -> String
+lastWithEmoji values =
+    let
+        reversed =
+            List.reverse values
+
+        first =
+            List.head reversed
+    in
+        case first of
+            Just value ->
+                "😄 " ++ toString value
+
+            Nothing ->
+                ""
 
 
-withEmoji : Float -> String
-withEmoji value =
-    "😄 " ++ toString value
+allButEngagement : Metric -> Bool
+allButEngagement metric =
+    metric.id /= "Engagement"
 
 
-metricValues : List WeeklyReport -> Html Msg
-metricValues reports =
-    ul [ class "weekly-reports" ] (List.map viewReport reports)
+viewDashboard : Maybe Dashboard -> Html Msg
+viewDashboard dashboard =
+    case dashboard of
+        Nothing ->
+            p [] [ text "Loading..." ]
+
+        Just dashboard ->
+            div [ class "dashboard" ]
+                [ div [ class "dashboard__top" ]
+                    [ div [ class "plot card card--big" ] [ text "Here lives the graph!" ]
+                    , div [ class "feedback card card--big" ] [ text "Here lives the feedback!" ]
+                    ]
+                , ul [ class "dashboard__bottom metrics" ] (List.map viewMetric (List.filter allButEngagement dashboard.metrics))
+                ]
 
 
-viewReport : WeeklyReport -> Html Msg
-viewReport report =
-    li [ class "weekly-report" ]
-        [ p [] [ text report.groupName ]
-        , p [] [ text report.date ]
-        , ul [ class "cards" ] (List.map viewMetricsValue (List.filter isInteresting report.metricsValues))
-        ]
-
-
-viewMetricsValue : MetricsValue -> Html Msg
-viewMetricsValue metricsValue =
+viewMetric : Metric -> Html Msg
+viewMetric metric =
     li [ class "card" ]
-        [ div [ class "card__header" ] [ text metricsValue.displayName ]
-        , div [ class "card__body" ] [ text (withEmoji metricsValue.value) ]
+        [ div [ class "card__header" ] [ text metric.name ]
+        , div [ class "card__body" ] [ text (lastWithEmoji metric.values) ]
         ]
+
+
+viewError : Maybe String -> Html Msg
+viewError error =
+    case error of
+        Nothing ->
+            text ""
+
+        Just err ->
+            p [] [ text err ]

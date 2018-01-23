@@ -1,17 +1,17 @@
 module Commands exposing (..)
 
 import Http
-import Decoders exposing (decodeWeeklyReports)
+import Decoders exposing (decodeDashboard)
 import Messages exposing (..)
 
 
-getWeeklyReports : Cmd Msg
-getWeeklyReports =
+getDashboard : Cmd Msg
+getDashboard =
     let
         url =
-            "http://localhost:3001/engagement?groupNames=Tammerforce&dates=2017-12-01,2018-01-01"
+            "http://localhost:3001/dashboard"
 
         request =
-            Http.get url decodeWeeklyReports
+            Http.get url decodeDashboard
     in
-        Http.send ReceiveWeeklyReports request
+        Http.send ReceiveDashboard request

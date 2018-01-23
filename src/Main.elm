@@ -1,37 +1,58 @@
 module Main exposing (..)
 
-import Html exposing (Html, text, div, h1)
+import Http
+import Html exposing (Html, text, header, div)
+import Html.Attributes exposing (class)
 import Types exposing (..)
-import Commands exposing (getWeeklyReports)
+import Commands exposing (getDashboard)
 import Messages exposing (..)
-import Views exposing (metricValues)
+import Views exposing (viewDashboard, viewError)
 
 
+initialModel : Model
 initialModel =
-    { weeklyReports = { weeklyReports = [] }
+    { dashboard = Nothing
+    , error = Nothing
     }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( initialModel, getWeeklyReports )
+    ( initialModel, getDashboard )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        ReceiveWeeklyReports (Ok weeklyReports) ->
-            ( { model | weeklyReports = weeklyReports }, Cmd.none )
+        ReceiveDashboard (Ok dashboard) ->
+            ( { model | dashboard = Just dashboard }, Cmd.none )
 
-        ReceiveWeeklyReports (Err _) ->
-            ( model, Cmd.none )
+        ReceiveDashboard (Err error) ->
+            case error of
+                Http.BadUrl error ->
+                    ( { model | error = Just error }, Cmd.none )
+
+                Http.Timeout ->
+                    ( { model | error = Just "HTTP Timeout" }, Cmd.none )
+
+                Http.NetworkError ->
+                    ( { model | error = Just "Network Error" }, Cmd.none )
+
+                Http.BadStatus _ ->
+                    ( { model | error = Just "Bad Status" }, Cmd.none )
+
+                Http.BadPayload error _ ->
+                    ( { model | error = Just error }, Cmd.none )
 
 
 view : Model -> Html Msg
 view model =
     div []
-        [ h1 [] [ text "Tribevibe" ]
-        , metricValues model.weeklyReports.weeklyReports
+        [ header [ class "header" ] [ text "Tribevibe" ]
+        , div [ class "container" ]
+            [ viewError model.error
+            , viewDashboard model.dashboard
+            ]
         ]
 
 

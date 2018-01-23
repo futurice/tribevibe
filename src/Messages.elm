@@ -1,8 +1,8 @@
 module Messages exposing (..)
 
 import Http
-import Types exposing (WeeklyReports)
+import Types exposing (Dashboard)
 
 
 type Msg
-    = ReceiveWeeklyReports (Result Http.Error WeeklyReports)
+    = ReceiveDashboard (Result Http.Error Dashboard)
