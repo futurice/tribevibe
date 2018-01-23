@@ -4,6 +4,7 @@ import Html exposing (Html, text, ul, li, h2, h3, p, div)
 import Html.Attributes exposing (class)
 import Types exposing (..)
 import Messages exposing (..)
+import Utils exposing (getEmojiForValue)
 
 
 lastWithEmoji : List Float -> String
@@ -17,7 +18,7 @@ lastWithEmoji values =
     in
         case first of
             Just value ->
-                "😄 " ++ toString value
+                (getEmojiForValue value) ++ " " ++ toString value
 
             Nothing ->
                 ""
