@@ -48,7 +48,7 @@ viewDashboard dashboard =
                 [ div [ Html.Attributes.class "dashboard__top" ]
                     [ div [ Html.Attributes.class "card card--big card--graph" ] [ viewGraph (List.head (List.filter onlyEngagement dashboard.metrics)) ]
                     , div [ Html.Attributes.class "card card--big card--engagement" ] [ viewEngagements dashboard.engagements ]
-                    , div [ Html.Attributes.class "card card--big card--feedback" ] [ viewFeedback dashboard.feedback ]
+                    , div [ Html.Attributes.class "card card--big card--feedback" ] (List.map viewFeedback dashboard.feedbacks)
                     ]
                 , ul [ Html.Attributes.class "dashboard__bottom" ] (List.map viewMetric (List.filter allButEngagement dashboard.metrics))
                 ]

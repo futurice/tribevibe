@@ -20,6 +20,10 @@ type alias Reply =
     }
 
 
+type alias Feedbacks =
+    List Feedback
+
+
 type alias Feedback =
     { dateCreated : String
     , question : String
@@ -32,7 +36,7 @@ type alias Feedback =
 type alias Dashboard =
     { engagements : Engagements
     , metrics : List Metric
-    , feedback : Feedback
+    , feedbacks : List Feedback
     }
 
 

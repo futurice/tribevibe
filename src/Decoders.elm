@@ -14,7 +14,7 @@ decodeDashboard =
         Dashboard
         |> required "engagements" (Decode.list decodeEngagement)
         |> required "metrics" (Decode.list decodeMetricValue)
-        |> required "feedback" decodeFeedback
+        |> required "feedbacks" (Decode.list decodeFeedback)
 
 
 decodeEngagement : Decoder Engagement
