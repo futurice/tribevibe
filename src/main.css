@@ -31,7 +31,7 @@ h1 {
   font-size: 30px;
 }
 
-li {
+ul li {
   list-style-type: none;
 }
 
@@ -102,9 +102,21 @@ li {
   }
 }
 
+.card--graph {
+  flex: 2;
+}
+.card--engagement {
+  flex: 1;
+}
+.card--feedback {
+  flex: 1.5;
+}
+
 .card--big {
   width: 100%;
   height: 50vh;
+  padding: 20px;
+  text-align: left;
   overflow-y: scroll;
 }
 
@@ -135,6 +147,9 @@ li {
     font-size: 24px;
   }
 }
+.card__title {
+  margin-bottom: 20px;
+}
 
 .card__body {
   margin: 20px 0;
@@ -153,15 +168,25 @@ li {
   }
 }
 
-.feedback {
-  padding: 20px;
-  text-align: left;
-}
-
-.feedback__question {
-  margin-bottom: 20px;
-}
-
 .feedback__answer {
   margin-bottom: 20px;
+}
+
+.engagements {
+  list-style-position: inside;
+}
+
+.engagements-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 2px;
+}
+
+.engagements-item:nth-child(even) {
+  background: rgba(150, 150, 150, 0.1);
+}
+
+.engagements-item__index {
+  margin-right: 10px;
 }
