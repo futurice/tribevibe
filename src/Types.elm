@@ -30,6 +30,17 @@ type alias Feedback =
 
 
 type alias Dashboard =
-    { metrics : List Metric
+    { engagements : Engagements
+    , metrics : List Metric
     , feedback : Feedback
+    }
+
+
+type alias Engagements =
+    List Engagement
+
+
+type alias Engagement =
+    { name : String
+    , value : Float
     }
