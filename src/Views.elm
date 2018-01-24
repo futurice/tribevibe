@@ -7,6 +7,7 @@ import Svg.Attributes exposing (..)
 import Plot exposing (..)
 import Types exposing (..)
 import Messages exposing (..)
+import Utils exposing (getEmojiForValue)
 
 
 lastWithEmoji : List Float -> String
@@ -20,7 +21,7 @@ lastWithEmoji values =
     in
         case first of
             Just value ->
-                "😄 " ++ toString value
+                (getEmojiForValue value) ++ " " ++ toString value
 
             Nothing ->
                 ""
@@ -45,8 +46,8 @@ viewDashboard dashboard =
         Just dashboard ->
             div [ Html.Attributes.class "dashboard" ]
                 [ div [ Html.Attributes.class "dashboard__top" ]
-                    [ div [ Html.Attributes.class "card card--big" ] [ viewGraph (List.head (List.filter onlyEngagement dashboard.metrics)) ]
-                    , div [ Html.Attributes.class "card card--big" ] [ viewFeedback dashboard.feedback ]
+                    [ div [ Html.Attributes.class "card card--big card--graph" ] [ viewGraph (List.head (List.filter onlyEngagement dashboard.metrics)) ]
+                    , div [ Html.Attributes.class "card card--big card--feedback" ] [ viewFeedback dashboard.feedback ]
                     ]
                 , ul [ Html.Attributes.class "dashboard__bottom" ] (List.map viewMetric (List.filter allButEngagement dashboard.metrics))
                 ]
@@ -60,15 +61,6 @@ horizontalAxis metric =
 axisColor : String
 axisColor =
     "#afafaf"
-
-
-title : Svg msg
-title =
-    viewLabel
-        [ fill axisColor
-        , style "text-anchor: end; font-style: italic;"
-        ]
-        "f(x) = sin x"
 
 
 viewGraph : Maybe Metric -> Html Msg
@@ -91,7 +83,7 @@ viewGraph metric =
 
 pinkStroke : String
 pinkStroke =
-    "#ff9edf"
+    "#BADA55"
 
 
 verticalAxis : Axis
@@ -133,7 +125,7 @@ viewMetric metric =
 viewFeedback : Feedback -> Html Msg
 viewFeedback feedback =
     div [ Html.Attributes.class "feedback" ]
-        [ h2 [ Html.Attributes.class "feedback__question" ] [ text feedback.question ]
+        [ h3 [ Html.Attributes.class "feedback__question" ] [ text feedback.question ]
         , p [ Html.Attributes.class "feedback__answer" ] [ text feedback.answer ]
         , h3 [ Html.Attributes.class "feedback__replies-title" ] [ text "Replies" ]
         , ul [ Html.Attributes.class "feedback__replies" ] (List.map viewReply feedback.replies)
