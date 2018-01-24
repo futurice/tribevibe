@@ -34,6 +34,11 @@ viewGraph metric =
             viewSeriesCustom
                 { defaultSeriesPlotCustomizations
                     | attributes = [ Svg.Attributes.width "100%", Svg.Attributes.height "100%" ]
+                    , height = 500
+                    , width = 720
+                    , horizontalAxis = sometimesYouDoNotHaveAnAxis
+                    , toDomainLowest = \y -> Basics.max 0 (y - 1)
+                    , toDomainHighest = \y -> Basics.min 10 (y + 2)
                 }
                 [ customLine ]
                 (List.indexedMap

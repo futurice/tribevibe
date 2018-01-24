@@ -104,6 +104,7 @@ ul li {
 
 .card--graph {
   flex: 2;
+  height: 100%;
 }
 .card--engagement {
   flex: 1;
@@ -189,4 +190,8 @@ ul li {
 
 .engagements-item__index {
   margin-right: 10px;
+}
+
+#elm-plot {
+  height: 100%;
 }
