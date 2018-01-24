@@ -2,12 +2,10 @@ module Views exposing (..)
 
 import Html exposing (Html, text, ul, li, h2, h3, p, div)
 import Html.Attributes exposing (class)
-import Svg exposing (Svg)
-import Svg.Attributes exposing (..)
-import Plot exposing (..)
 import Types exposing (..)
 import Messages exposing (..)
 import Utils exposing (getEmojiForValue)
+import Graph exposing (viewGraph)
 
 
 lastWithEmoji : List Float -> String
@@ -51,67 +49,6 @@ viewDashboard dashboard =
                     ]
                 , ul [ Html.Attributes.class "dashboard__bottom" ] (List.map viewMetric (List.filter allButEngagement dashboard.metrics))
                 ]
-
-
-horizontalAxis : Metric -> Axis
-horizontalAxis metric =
-    normalAxis
-
-
-axisColor : String
-axisColor =
-    "#afafaf"
-
-
-viewGraph : Maybe Metric -> Html Msg
-viewGraph metric =
-    case metric of
-        Nothing ->
-            text "Nothing here"
-
-        Just metric ->
-            viewSeriesCustom
-                { defaultSeriesPlotCustomizations
-                    | toDomainLowest = \y -> y - 0.25
-                }
-                [ customLine ]
-                (List.indexedMap
-                    (\i x -> ( toFloat i, x ))
-                    metric.values
-                )
-
-
-pinkStroke : String
-pinkStroke =
-    "#BADA55"
-
-
-verticalAxis : Axis
-verticalAxis =
-    customAxis <|
-        \summary ->
-            { position = Basics.min
-            , axisLine = Just (dataLine summary)
-            , ticks = List.map simpleTick (interval 0 0.5 summary)
-            , labels = List.map simpleLabel (interval 0 0.5 summary)
-            , flipAnchor = False
-            }
-
-
-dataLine : AxisSummary -> LineCustomizations
-dataLine summary =
-    { attributes = [ stroke "grey" ]
-    , start = summary.dataMin
-    , end = summary.dataMax
-    }
-
-
-customLine : Series (List ( Float, Float )) msg
-customLine =
-    { axis = verticalAxis
-    , interpolation = Monotone Nothing [ stroke pinkStroke ]
-    , toDataPoints = List.map (\( x, y ) -> clear x y)
-    }
 
 
 viewMetric : Metric -> Html Msg
