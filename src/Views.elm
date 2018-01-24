@@ -46,7 +46,7 @@ viewDashboard dashboard =
                 [ div [ class "dashboard__top" ]
                     [ div [ class "card card--big card--graph" ] [ viewGraph (List.head (List.filter onlyEngagement dashboard.metrics)) ]
                     , div [ class "card card--big card--engagement" ] [ viewEngagements dashboard.engagements ]
-                    , div [ class "card card--big card--feedback" ] (List.map viewFeedback dashboard.feedbacks)
+                    , div [ class "card card--big card--feedback" ] [ viewFeedback dashboard.currentFeedback ]
                     ]
                 , ul [ class "dashboard__bottom" ] (List.map viewMetric (List.filter allButEngagement dashboard.metrics))
                 ]
@@ -60,14 +60,19 @@ viewMetric metric =
         ]
 
 
-viewFeedback : Feedback -> Html Msg
+viewFeedback : Maybe Feedback -> Html Msg
 viewFeedback feedback =
-    div []
-        [ h3 [ class "card__title" ] [ text feedback.question ]
-        , p [ class "feedback__answer" ] [ text feedback.answer ]
-        , h3 [ class "feedback__replies-title" ] [ text "Replies" ]
-        , ul [ class "feedback__replies" ] (List.map viewReply feedback.replies)
-        ]
+    case feedback of
+        Nothing ->
+            text ""
+
+        Just feedback ->
+            div []
+                [ h3 [ class "card__title" ] [ text feedback.question ]
+                , p [ class "feedback__answer" ] [ text feedback.answer ]
+                , h3 [ class "feedback__replies-title" ] [ text "Replies" ]
+                , ul [ class "feedback__replies" ] (List.map viewReply feedback.replies)
+                ]
 
 
 viewReply : Reply -> Html Msg

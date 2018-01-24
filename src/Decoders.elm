@@ -1,7 +1,7 @@
 module Decoders exposing (..)
 
 import Json.Decode as Decode exposing (int, string, decodeString, Decoder)
-import Json.Decode.Pipeline exposing (decode, required, requiredAt)
+import Json.Decode.Pipeline exposing (decode, required, requiredAt, hardcoded)
 import Types exposing (..)
 
 
@@ -15,6 +15,7 @@ decodeDashboard =
         |> required "engagements" (Decode.list decodeEngagement)
         |> required "metrics" (Decode.list decodeMetricValue)
         |> required "feedbacks" (Decode.list decodeFeedback)
+        |> hardcoded Nothing
 
 
 decodeEngagement : Decoder Engagement

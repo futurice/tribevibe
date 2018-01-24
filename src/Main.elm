@@ -3,6 +3,7 @@ module Main exposing (..)
 import Http
 import Html exposing (Html, text, header, div)
 import Html.Attributes exposing (class)
+import Time exposing (Time, second)
 import Types exposing (..)
 import Commands exposing (getDashboard)
 import Messages exposing (..)
@@ -13,6 +14,7 @@ initialModel : Model
 initialModel =
     { dashboard = Nothing
     , error = Nothing
+    , secondsPassed = 0
     }
 
 
@@ -25,7 +27,32 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         ReceiveDashboard (Ok dashboard) ->
-            ( { model | dashboard = Just dashboard }, Cmd.none )
+            case dashboard.feedbacks of
+                [] ->
+                    ( { model | dashboard = Just dashboard }, Cmd.none )
+
+                items ->
+                    let
+                        currentFeedback =
+                            List.head items
+
+                        feedbacks =
+                            case currentFeedback of
+                                Just feedback ->
+                                    case (List.tail items) of
+                                        Just items ->
+                                            List.append items [ feedback ]
+
+                                        Nothing ->
+                                            items
+
+                                Nothing ->
+                                    items
+
+                        dash =
+                            { dashboard | currentFeedback = currentFeedback, feedbacks = feedbacks }
+                    in
+                        ( { model | dashboard = Just dash }, Cmd.none )
 
         ReceiveDashboard (Err error) ->
             case error of
@@ -44,6 +71,43 @@ update msg model =
                 Http.BadPayload error _ ->
                     ( { model | error = Just error }, Cmd.none )
 
+        -- Show next feedback
+        Tick newTime ->
+            if model.secondsPassed == 5 then
+                case model.dashboard of
+                    Just dashboard ->
+                        case dashboard.feedbacks of
+                            [] ->
+                                ( { model | dashboard = Just dashboard }, Cmd.none )
+
+                            items ->
+                                let
+                                    currentFeedback =
+                                        List.head items
+
+                                    feedbacks =
+                                        case currentFeedback of
+                                            Just feedback ->
+                                                case (List.tail items) of
+                                                    Just items ->
+                                                        List.append items [ feedback ]
+
+                                                    Nothing ->
+                                                        items
+
+                                            Nothing ->
+                                                items
+
+                                    dash =
+                                        { dashboard | currentFeedback = currentFeedback, feedbacks = feedbacks }
+                                in
+                                    ( { model | dashboard = Just dash, secondsPassed = 0 }, Cmd.none )
+
+                    Nothing ->
+                        ( model, Cmd.none )
+            else
+                ( { model | secondsPassed = model.secondsPassed + 1 }, Cmd.none )
+
 
 view : Model -> Html Msg
 view model =
@@ -56,11 +120,16 @@ view model =
         ]
 
 
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Time.every second Tick
+
+
 main : Program Never Model Msg
 main =
     Html.program
         { view = view
         , init = init
         , update = update
-        , subscriptions = always Sub.none
+        , subscriptions = subscriptions
         }

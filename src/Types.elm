@@ -4,6 +4,7 @@ module Types exposing (..)
 type alias Model =
     { dashboard : Maybe Dashboard
     , error : Maybe String
+    , secondsPassed : Int
     }
 
 
@@ -37,6 +38,7 @@ type alias Dashboard =
     { engagements : Engagements
     , metrics : List Metric
     , feedbacks : List Feedback
+    , currentFeedback : Maybe Feedback
     }
 
 
