@@ -4,12 +4,12 @@ import Html exposing (Html, text, ul, ol, li, h2, h3, p, div, span)
 import Html.Attributes exposing (class)
 import Types exposing (..)
 import Messages exposing (..)
-import Utils exposing (getEmojiForValue)
+import Utils exposing (getEmojiForValue, getClassNamesForValue)
 import Graph exposing (viewGraph)
 
 
-lastWithEmoji : List Float -> String
-lastWithEmoji values =
+lastFromListTransformed : (Float -> String) -> List Float -> String
+lastFromListTransformed transformer values =
     let
         reversed =
             List.reverse values
@@ -19,10 +19,20 @@ lastWithEmoji values =
     in
         case first of
             Just value ->
-                (getEmojiForValue value) ++ " " ++ toString value
+                transformer value
 
             Nothing ->
                 ""
+
+
+lastWithEmoji : List Float -> String
+lastWithEmoji =
+    lastFromListTransformed getEmojiForValue
+
+
+classNamesForLast : List Float -> String
+classNamesForLast =
+    lastFromListTransformed getClassNamesForValue
 
 
 allButEngagement : Metric -> Bool
@@ -54,7 +64,7 @@ viewDashboard dashboard =
 
 viewMetric : Metric -> Html Msg
 viewMetric metric =
-    li [ class "card" ]
+    li [ class (classNamesForLast metric.values) ]
         [ div [ class "card__header" ] [ text metric.name ]
         , div [ class "card__body" ] [ text (lastWithEmoji metric.values) ]
         ]
@@ -72,6 +82,7 @@ viewFeedback feedback =
                 , p [ class "feedback__answer" ] [ text feedback.answer ]
                 , h3 [ class "feedback__replies-title" ] [ text "Replies" ]
                 , ul [ class "feedback__replies" ] (List.map viewReply feedback.replies)
+                , div [ class "feedback__timer" ] []
                 ]
 
 

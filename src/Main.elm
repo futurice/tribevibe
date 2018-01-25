@@ -64,23 +64,24 @@ update msg model =
                             [] ->
                                 ( { model | dashboard = Just dashboard }, Cmd.none )
 
-                            items ->
+                            feedbackItems ->
+                                -- Get the first feedback and move it to the end of the feedbacks list
                                 let
                                     headFeedback =
-                                        List.head items
+                                        List.head feedbackItems
 
                                     feedbacks =
                                         case headFeedback of
                                             Just feedback ->
-                                                case (List.tail items) of
-                                                    Just items ->
-                                                        List.append items [ feedback ]
+                                                case (List.tail feedbackItems) of
+                                                    Just feedbackItems ->
+                                                        List.append feedbackItems [ feedback ]
 
                                                     Nothing ->
-                                                        items
+                                                        feedbackItems
 
                                             Nothing ->
-                                                items
+                                                feedbackItems
 
                                     dash =
                                         { dashboard | feedbacks = feedbacks }
