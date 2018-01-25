@@ -31,26 +31,10 @@ update msg model =
                 [] ->
                     ( { model | dashboard = Just dashboard }, Cmd.none )
 
-                items ->
+                feedbacks ->
                     let
-                        currentFeedback =
-                            List.head items
-
-                        feedbacks =
-                            case currentFeedback of
-                                Just feedback ->
-                                    case (List.tail items) of
-                                        Just items ->
-                                            List.append items [ feedback ]
-
-                                        Nothing ->
-                                            items
-
-                                Nothing ->
-                                    items
-
                         dash =
-                            { dashboard | currentFeedback = currentFeedback, feedbacks = feedbacks }
+                            { dashboard | feedbacks = feedbacks }
                     in
                         ( { model | dashboard = Just dash }, Cmd.none )
 
@@ -82,11 +66,11 @@ update msg model =
 
                             items ->
                                 let
-                                    currentFeedback =
+                                    headFeedback =
                                         List.head items
 
                                     feedbacks =
-                                        case currentFeedback of
+                                        case headFeedback of
                                             Just feedback ->
                                                 case (List.tail items) of
                                                     Just items ->
@@ -99,7 +83,7 @@ update msg model =
                                                 items
 
                                     dash =
-                                        { dashboard | currentFeedback = currentFeedback, feedbacks = feedbacks }
+                                        { dashboard | feedbacks = feedbacks }
                                 in
                                     ( { model | dashboard = Just dash, secondsPassed = 0 }, Cmd.none )
 

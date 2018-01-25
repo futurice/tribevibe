@@ -46,7 +46,7 @@ viewDashboard dashboard =
                 [ div [ class "dashboard__top" ]
                     [ div [ class "card card--big card--graph" ] [ viewGraph (List.head (List.filter onlyEngagement dashboard.metrics)) ]
                     , div [ class "card card--big card--engagement" ] [ viewEngagements dashboard.engagements ]
-                    , div [ class "card card--big card--feedback" ] [ viewFeedback dashboard.currentFeedback ]
+                    , div [ class "card card--big card--feedback" ] [ viewFeedback (List.head dashboard.feedbacks) ]
                     ]
                 , ul [ class "dashboard__bottom" ] (List.map viewMetric (List.filter allButEngagement dashboard.metrics))
                 ]

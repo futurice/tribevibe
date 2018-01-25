@@ -15,7 +15,6 @@ decodeDashboard =
         |> required "engagements" (Decode.list decodeEngagement)
         |> required "metrics" (Decode.list decodeMetricValue)
         |> required "feedbacks" (Decode.list decodeFeedback)
-        |> hardcoded Nothing
 
 
 decodeEngagement : Decoder Engagement

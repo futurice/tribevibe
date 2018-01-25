@@ -38,7 +38,6 @@ type alias Dashboard =
     { engagements : Engagements
     , metrics : List Metric
     , feedbacks : List Feedback
-    , currentFeedback : Maybe Feedback
     }
 
 
