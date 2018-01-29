@@ -33,12 +33,16 @@ viewGraph metric =
         Just metric ->
             viewSeriesCustom
                 { defaultSeriesPlotCustomizations
-                    | attributes = [ Svg.Attributes.width "100%", Svg.Attributes.height "100%" ]
-                    , height = 500
+                    | attributes = [ width "100%" ]
+                    , height = 300
                     , width = 720
-                    , horizontalAxis = sometimesYouDoNotHaveAnAxis
+                    , horizontalAxis = horizontalAxis
                     , toDomainLowest = \y -> Basics.max 0 (y - 1)
-                    , toDomainHighest = \y -> Basics.min 10 (y + 2)
+                    , toDomainHighest = \y -> Basics.min 10 (toFloat (Basics.ceiling (y + 1)))
+                    , grid =
+                        { horizontal = decentGrid
+                        , vertical = decentGrid
+                        }
                 }
                 [ customLine ]
                 (List.indexedMap
@@ -47,8 +51,8 @@ viewGraph metric =
                 )
 
 
-pinkStroke : String
-pinkStroke =
+lineColor : String
+lineColor =
     "#BADA55"
 
 
@@ -57,24 +61,34 @@ verticalAxis =
     customAxis <|
         \summary ->
             { position = Basics.min
-            , axisLine = Just (dataLine summary)
-            , ticks = List.map simpleTick (interval 0 0.5 summary)
-            , labels = List.map simpleLabel (interval 0 0.5 summary)
+            , axisLine = Just (simpleLine summary)
+            , ticks = List.map simpleTick (decentPositions summary |> remove 0)
+            , labels = List.map simpleLabel (decentPositions summary |> remove 0)
             , flipAnchor = False
             }
 
 
 dataLine : AxisSummary -> LineCustomizations
 dataLine summary =
-    { attributes = [ stroke "grey" ]
-    , start = summary.dataMin
-    , end = summary.dataMax
+    { attributes = [ stroke "grey", strokeWidth "2" ]
+    , start = summary.min
+    , end = summary.max
     }
+
+
+pointColor : String
+pointColor =
+    "#00AAAA"
+
+
+blueCircle : ( Float, Float ) -> DataPoint msg
+blueCircle ( x, y ) =
+    dot (viewCircle 5 pointColor) x y
 
 
 customLine : Series (List ( Float, Float )) msg
 customLine =
-    { axis = normalAxis
-    , interpolation = Monotone Nothing [ stroke pinkStroke ]
-    , toDataPoints = List.map (\( x, y ) -> clear x y)
+    { axis = verticalAxis
+    , interpolation = Monotone Nothing [ stroke lineColor ]
+    , toDataPoints = List.map blueCircle
     }

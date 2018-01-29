@@ -102,11 +102,6 @@ ul li {
   }
 }
 
-.card--graph {
-  flex: 2;
-  height: 100%;
-}
-
 .card--engagement {
   flex: 1;
 }
@@ -122,6 +117,16 @@ ul li {
   padding: 20px;
   text-align: left;
   overflow-y: scroll;
+}
+
+.card--graph {
+  flex: 2;
+  padding: 0;
+  overflow: hidden;
+}
+
+.elm-plot__series {
+  stroke-width: 7px;
 }
 
 @media screen and (max-width: 700px) {
@@ -232,4 +237,8 @@ ul li {
 
 #elm-plot {
   height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
