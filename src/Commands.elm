@@ -9,7 +9,7 @@ getDashboard : Cmd Msg
 getDashboard =
     let
         url =
-            "http://localhost:3001/dashboard"
+            "http://localhost:4000/api/dashboard"
 
         request =
             Http.get url decodeDashboard
