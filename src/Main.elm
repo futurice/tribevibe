@@ -1,26 +1,39 @@
 module Main exposing (..)
 
 import Http
-import Html exposing (Html, text, header, div)
-import Html.Attributes exposing (class)
+import Html exposing (Html, text, div)
+import Navigation exposing (Location)
+import Routes exposing (parseLocation)
 import Time exposing (Time, second)
 import Types exposing (..)
 import Commands exposing (getDashboard)
 import Messages exposing (..)
-import Views exposing (viewDashboard, viewError)
+import Views exposing (viewTribe, viewError)
 
 
-initialModel : Model
-initialModel =
+initialModel : Route -> Model
+initialModel route =
     { dashboard = Nothing
     , error = Nothing
-    , secondsPassed = 0
+    , route = route
     }
 
 
-init : ( Model, Cmd Msg )
-init =
-    ( initialModel, getDashboard )
+init : Location -> ( Model, Cmd Msg )
+init location =
+    let
+        currentRoute =
+            parseLocation location
+
+        tribeParam =
+            case currentRoute of
+                TribeDashboard tribe ->
+                    tribe
+
+                _ ->
+                    ""
+    in
+        ( initialModel currentRoute, getDashboard tribeParam )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -57,46 +70,60 @@ update msg model =
 
         -- Show next feedback
         Tick newTime ->
-            if model.secondsPassed == 5 then
-                case model.dashboard of
-                    Just dashboard ->
-                        case dashboard.feedbacks of
-                            [] ->
-                                ( { model | dashboard = Just dashboard }, Cmd.none )
+            case model.dashboard of
+                Just dashboard ->
+                    case dashboard.feedbacks of
+                        [] ->
+                            ( { model | dashboard = Just dashboard }, Cmd.none )
 
-                            head :: rest ->
-                                -- Get the first feedback and move it to the end of the feedbacks list
-                                let
-                                    dash =
-                                        { dashboard | feedbacks = (List.append rest [ head ]) }
-                                in
-                                    ( { model | dashboard = Just dash, secondsPassed = 0 }, Cmd.none )
+                        head :: rest ->
+                            -- Get the first feedback and move it to the end of the feedbacks list
+                            let
+                                dash =
+                                    { dashboard | feedbacks = (List.append rest [ head ]) }
+                            in
+                                ( { model | dashboard = Just dash }, Cmd.none )
 
-                    Nothing ->
-                        ( model, Cmd.none )
-            else
-                ( { model | secondsPassed = model.secondsPassed + 1 }, Cmd.none )
+                Nothing ->
+                    ( model, Cmd.none )
+
+        LocationChange location ->
+            let
+                newRoute =
+                    parseLocation location
+
+                tribeParam =
+                    case newRoute of
+                        TribeDashboard tribe ->
+                            tribe
+
+                        _ ->
+                            ""
+            in
+                ( { model | route = newRoute }, getDashboard tribeParam )
 
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ header [ class "header" ] [ text "Tribevibe" ]
-        , div [ class "container" ]
-            [ viewError model.error
-            , viewDashboard model.dashboard
-            ]
-        ]
+    case model.route of
+        FutuDashboard ->
+            viewTribe model ""
+
+        TribeDashboard tribe ->
+            viewTribe model tribe
+
+        NotFound ->
+            viewTribe model ""
 
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Time.every second Tick
+    Time.every (5 * second) Tick
 
 
 main : Program Never Model Msg
 main =
-    Html.program
+    Navigation.program LocationChange
         { view = view
         , init = init
         , update = update

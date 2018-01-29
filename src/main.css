@@ -197,7 +197,7 @@ ul li {
   height: 5px;
   background-color: #ccd3e5;
   animation-name: timer;
-  animation-duration: 6s;
+  animation-duration: 5s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
 }

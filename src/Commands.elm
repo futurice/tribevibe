@@ -5,11 +5,11 @@ import Decoders exposing (decodeDashboard)
 import Messages exposing (..)
 
 
-getDashboard : Cmd Msg
-getDashboard =
+getDashboard : String -> Cmd Msg
+getDashboard tribe =
     let
         url =
-            "http://localhost:4000/api/dashboard"
+            "http://localhost:4000/api/dashboard/" ++ tribe
 
         request =
             Http.get url decodeDashboard

@@ -4,7 +4,7 @@ module Types exposing (..)
 type alias Model =
     { dashboard : Maybe Dashboard
     , error : Maybe String
-    , secondsPassed : Int
+    , route : Route
     }
 
 
@@ -49,3 +49,9 @@ type alias Engagement =
     { name : String
     , value : Float
     }
+
+
+type Route
+    = FutuDashboard
+    | TribeDashboard String
+    | NotFound

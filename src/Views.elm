@@ -1,6 +1,6 @@
 module Views exposing (..)
 
-import Html exposing (Html, text, ul, ol, li, h2, h3, p, div, span)
+import Html exposing (Html, text, header, ul, ol, li, h2, h3, p, div, span)
 import Html.Attributes exposing (class)
 import Types exposing (..)
 import Messages exposing (..)
@@ -43,6 +43,19 @@ allButEngagement metric =
 onlyEngagement : Metric -> Bool
 onlyEngagement metric =
     metric.id == "Engagement"
+
+
+viewTribe : Model -> String -> Html Msg
+viewTribe model tribe =
+    div []
+        [ header [ class "header" ]
+            [ span [] [ text ("Tribevibe " ++ tribe) ]
+            ]
+        , div [ class "container" ]
+            [ viewError model.error
+            , viewDashboard model.dashboard
+            ]
+        ]
 
 
 viewDashboard : Maybe Dashboard -> Html Msg
