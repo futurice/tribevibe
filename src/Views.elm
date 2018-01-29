@@ -96,7 +96,7 @@ viewEngagements : Engagements -> Html Msg
 viewEngagements engagements =
     div []
         [ h3 [ class "card__title" ] [ text "Top Engagement" ]
-        , ul [ class "engagements" ] (List.indexedMap viewEngagement engagements)
+        , ul [ class "engagements" ] (List.indexedMap viewEngagement (List.reverse (List.sortBy .value engagements)))
         ]
 
 
