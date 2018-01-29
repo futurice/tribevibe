@@ -94,10 +94,20 @@ viewFeedback feedback =
             div []
                 [ h3 [ class "card__title" ] [ text feedback.question ]
                 , p [ class "feedback__answer" ] [ text feedback.answer ]
-                , h3 [ class "feedback__replies-title" ] [ text "Replies" ]
-                , ul [ class "feedback__replies" ] (List.map viewReply feedback.replies)
+                , viewReplies feedback.replies
                 , div [ class "feedback__timer" ] []
                 ]
+
+
+viewReplies : List Reply -> Html Msg
+viewReplies replies =
+    if List.length replies == 0 then
+        text ""
+    else
+        div []
+            [ h3 [ class "feedback__replies-title" ] [ text "Replies" ]
+            , ul [ class "feedback__replies" ] (List.map viewReply replies)
+            ]
 
 
 viewReply : Reply -> Html Msg
