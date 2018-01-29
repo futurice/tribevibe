@@ -2,6 +2,7 @@ module Views exposing (..)
 
 import Html exposing (Html, text, header, ul, ol, li, h2, h3, p, div, span)
 import Html.Attributes exposing (class)
+import ElmEscapeHtml exposing (unescape)
 import Types exposing (..)
 import Messages exposing (..)
 import Utils exposing (getEmojiForValue, getClassNamesForValue)
@@ -92,8 +93,8 @@ viewFeedback feedback =
 
         Just feedback ->
             div []
-                [ h3 [ class "card__title" ] [ text feedback.question ]
-                , p [ class "feedback__answer" ] [ text feedback.answer ]
+                [ h3 [ class "card__title" ] [ text (unescape feedback.question) ]
+                , p [ class "feedback__answer" ] [ text (unescape feedback.answer) ]
                 , viewReplies feedback.replies
                 , div [ class "feedback__timer" ] []
                 ]
@@ -112,7 +113,7 @@ viewReplies replies =
 
 viewReply : Reply -> Html Msg
 viewReply reply =
-    li [ class "feedback__reply" ] [ text reply.message ]
+    li [ class "feedback__reply" ] [ text (unescape reply.message) ]
 
 
 viewEngagements : Engagements -> Html Msg
