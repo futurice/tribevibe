@@ -71,7 +71,10 @@ viewDashboard dashboard =
                     [ div [ class "card card--big card--graph graph__wrapper" ]
                         [ viewGraph (List.head (List.filter onlyEngagement dashboard.metrics)) ]
                     , div [ class "card card--big card--engagement" ] [ viewEngagements dashboard.engagements ]
-                    , div [ class "card card--big card--feedback" ] [ viewFeedback (List.head dashboard.feedbacks) ]
+                    , div [ class "card card--big card--feedback" ]
+                        [ viewFeedback (List.head dashboard.feedbacks)
+                        , div [ class "feedback__timer" ] []
+                        ]
                     ]
                 , ul [ class "dashboard__bottom" ] (List.map viewMetric (List.filter allButEngagement dashboard.metrics))
                 ]
@@ -95,9 +98,14 @@ viewFeedback feedback =
             div []
                 [ h3 [ class "card__title" ] [ text (unescape feedback.question) ]
                 , p [ class "feedback__answer" ] [ text (unescape feedback.answer) ]
+                , div [ class "feedback__tags" ] (List.map viewTag feedback.tags)
                 , viewReplies feedback.replies
-                , div [ class "feedback__timer" ] []
                 ]
+
+
+viewTag : String -> Html Msg
+viewTag tag =
+    div [ class "feedback__tag" ] [ text tag ]
 
 
 viewReplies : List Reply -> Html Msg
@@ -106,8 +114,7 @@ viewReplies replies =
         text ""
     else
         div []
-            [ h3 [ class "feedback__replies-title" ] [ text "Replies" ]
-            , ul [ class "feedback__replies" ] (List.map viewReply replies)
+            [ ul [ class "feedback__replies" ] (List.map viewReply replies)
             ]
 
 
