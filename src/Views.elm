@@ -50,7 +50,8 @@ viewTribe : Model -> String -> Html Msg
 viewTribe model tribe =
     div []
         [ header [ class "header" ]
-            [ span [] [ text ("Tribevibe " ++ tribe) ]
+            [ span [] [ text "Tribevibe" ]
+            , span [ class "header__tribe" ] [ text tribe ]
             ]
         , div [ class "container" ]
             [ viewError model.error
