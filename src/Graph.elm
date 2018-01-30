@@ -33,7 +33,7 @@ verticalAxis =
 
 blueCircle : ( Float, Float ) -> DataPoint msg
 blueCircle ( x, y ) =
-    dot (viewCircle 5 "#00AAAA") x y
+    dot (viewCircle 5 "#5f80e7") x y
 
 
 customLine : Series (List ( Float, Float )) msg
