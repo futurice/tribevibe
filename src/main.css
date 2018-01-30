@@ -32,7 +32,7 @@ header {
 
 header span {
   display: inline-block;
-  margin-right: 1rem;
+  margin-right: 0.7rem;
 }
 
 .header__tribe {
@@ -121,12 +121,12 @@ ul li {
   height: 510px;
   padding: 20px;
   text-align: left;
+  overflow: hidden;
 }
 
 .card--graph {
   flex: 2;
   padding: 0;
-  overflow: hidden;
 }
 
 .card--engagement {
