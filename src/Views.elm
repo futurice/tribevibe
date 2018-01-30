@@ -64,7 +64,7 @@ viewDashboard : Maybe Dashboard -> Html Msg
 viewDashboard dashboard =
     case dashboard of
         Nothing ->
-            p [] [ text "Loading..." ]
+            p [ class "dashboard__loading" ] [ text "Damn, Officevibe API can be slow..." ]
 
         Just dashboard ->
             div [ class "dashboard" ]
