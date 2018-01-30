@@ -13,22 +13,42 @@ horizontalAxis =
         \summary ->
             { position = Basics.min
             , axisLine = Nothing
-            , ticks = List.map simpleTick [ 0, 1, 2 ]
+            , ticks = []
             , labels = List.map simpleLabel [ 0, 1, 2 ]
             , flipAnchor = False
             }
 
 
-axisColor : String
-axisColor =
-    "#afafaf"
+verticalAxis : Axis
+verticalAxis =
+    customAxis <|
+        \summary ->
+            { position = Basics.min
+            , axisLine = Just (simpleLine summary)
+            , ticks = List.map simpleTick (decentPositions summary |> remove 0)
+            , labels = List.map simpleLabel (decentPositions summary |> remove 0)
+            , flipAnchor = False
+            }
+
+
+blueCircle : ( Float, Float ) -> DataPoint msg
+blueCircle ( x, y ) =
+    dot (viewCircle 5 "#00AAAA") x y
+
+
+customLine : Series (List ( Float, Float )) msg
+customLine =
+    { axis = verticalAxis
+    , interpolation = Monotone Nothing [ stroke "#BADA55" ]
+    , toDataPoints = List.map blueCircle
+    }
 
 
 viewGraph : Maybe Metric -> Html Msg
 viewGraph metric =
     case metric of
         Nothing ->
-            text "Nothing here"
+            text ""
 
         Just metric ->
             viewSeriesCustom
@@ -49,46 +69,3 @@ viewGraph metric =
                     (\i x -> ( toFloat i, x ))
                     metric.values
                 )
-
-
-lineColor : String
-lineColor =
-    "#BADA55"
-
-
-verticalAxis : Axis
-verticalAxis =
-    customAxis <|
-        \summary ->
-            { position = Basics.min
-            , axisLine = Just (simpleLine summary)
-            , ticks = List.map simpleTick (decentPositions summary |> remove 0)
-            , labels = List.map simpleLabel (decentPositions summary |> remove 0)
-            , flipAnchor = False
-            }
-
-
-dataLine : AxisSummary -> LineCustomizations
-dataLine summary =
-    { attributes = [ stroke "grey", strokeWidth "0" ]
-    , start = summary.min
-    , end = summary.max
-    }
-
-
-pointColor : String
-pointColor =
-    "#00AAAA"
-
-
-blueCircle : ( Float, Float ) -> DataPoint msg
-blueCircle ( x, y ) =
-    dot (viewCircle 5 pointColor) x y
-
-
-customLine : Series (List ( Float, Float )) msg
-customLine =
-    { axis = verticalAxis
-    , interpolation = Monotone Nothing [ stroke lineColor ]
-    , toDataPoints = List.map blueCircle
-    }
