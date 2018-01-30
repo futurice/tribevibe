@@ -24,8 +24,8 @@ verticalAxis =
     customAxis <|
         \summary ->
             { position = Basics.min
-            , axisLine = Just (simpleLine summary)
-            , ticks = List.map simpleTick (decentPositions summary |> remove 0)
+            , axisLine = Nothing
+            , ticks = []
             , labels = List.map simpleLabel (decentPositions summary |> remove 0)
             , flipAnchor = False
             }
