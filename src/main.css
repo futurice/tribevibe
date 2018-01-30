@@ -143,10 +143,6 @@ ul li {
   padding: 0;
 }
 
-.card--engagement {
-  /* flex: 1; */
-}
-
 .card--feedback {
   width: calc(40% - 20px);
   overflow: hidden;
