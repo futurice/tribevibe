@@ -12,9 +12,9 @@ horizontalAxis =
     customAxis <|
         \summary ->
             { position = Basics.min
-            , axisLine = Just (dataLine summary)
-            , ticks = List.map simpleTick [ 0, 90, 180, 270, 360 ]
-            , labels = List.map simpleLabel [ 0, 90, 180, 270, 360 ]
+            , axisLine = Nothing
+            , ticks = List.map simpleTick [ 0, 1, 2 ]
+            , labels = List.map simpleLabel [ 0, 1, 2 ]
             , flipAnchor = False
             }
 
@@ -34,7 +34,7 @@ viewGraph metric =
             viewSeriesCustom
                 { defaultSeriesPlotCustomizations
                     | attributes = [ width "100%" ]
-                    , height = 300
+                    , height = 450
                     , width = 720
                     , horizontalAxis = horizontalAxis
                     , toDomainLowest = \y -> Basics.max 0 (y - 1)
@@ -70,7 +70,7 @@ verticalAxis =
 
 dataLine : AxisSummary -> LineCustomizations
 dataLine summary =
-    { attributes = [ stroke "grey", strokeWidth "2" ]
+    { attributes = [ stroke "grey", strokeWidth "0" ]
     , start = summary.min
     , end = summary.max
     }
