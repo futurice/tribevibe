@@ -271,12 +271,19 @@ ul li {
   margin-right: 10px;
 }
 
-#elm-plot {
-  height: 100%;
+.graph__wrapper {
+  padding: 10px;
+}
+
+#graph-container {
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 100%;
+}
+
+.c3-lines-engagement {
+  stroke-width: 5px;
+  stroke: #BADA55;
+  fill: none;
 }
 
 .feedback__replies {
