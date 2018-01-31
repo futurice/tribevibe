@@ -9,6 +9,7 @@ import Types exposing (..)
 import Commands exposing (getDashboard)
 import Messages exposing (..)
 import Views exposing (viewTribe, viewError)
+import Ports exposing (drawGraph)
 
 
 initialModel : Route -> Model
@@ -49,7 +50,7 @@ update msg model =
                         dash =
                             { dashboard | feedbacks = feedbacks }
                     in
-                        ( { model | dashboard = Just dash }, Cmd.none )
+                        ( { model | dashboard = Just dash }, drawGraph dashboard.metrics )
 
         ReceiveDashboard (Err error) ->
             case error of

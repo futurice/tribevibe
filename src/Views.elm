@@ -70,7 +70,7 @@ viewDashboard dashboard =
             div [ class "dashboard" ]
                 [ div [ class "dashboard__top" ]
                     [ div [ class "card card--big card--graph graph__wrapper" ]
-                        [ viewGraph (List.head (List.filter onlyEngagement dashboard.metrics)) ]
+                        [ div [ Html.Attributes.id "graph-container" ] [] ]
                     , div [ class "card card--big card--engagement" ] [ viewEngagements dashboard.engagements ]
                     , div [ class "card card--big card--feedback" ]
                         [ viewFeedback (List.head dashboard.feedbacks)
