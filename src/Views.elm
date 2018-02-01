@@ -6,7 +6,6 @@ import ElmEscapeHtml exposing (unescape)
 import Types exposing (..)
 import Messages exposing (..)
 import Utils exposing (getEmojiForValue, getClassNamesForValue)
-import Graph exposing (viewGraph)
 
 
 lastFromListTransformed : (Float -> String) -> List Float -> String
@@ -46,6 +45,11 @@ onlyEngagement metric =
     metric.id == "Engagement"
 
 
+pickValue : MetricDataPoint -> Float
+pickValue metricDataPoint =
+    metricDataPoint.value
+
+
 viewTribe : Model -> String -> Html Msg
 viewTribe model tribe =
     div []
@@ -83,10 +87,14 @@ viewDashboard dashboard =
 
 viewMetric : Metric -> Html Msg
 viewMetric metric =
-    li [ class (classNamesForLast metric.values) ]
-        [ div [ class "card__header" ] [ text metric.name ]
-        , div [ class "card__body" ] [ text (lastWithEmoji metric.values) ]
-        ]
+    let
+        onlyValues =
+            List.map pickValue metric.values
+    in
+        li [ class (classNamesForLast onlyValues) ]
+            [ div [ class "card__header" ] [ text metric.name ]
+            , div [ class "card__body" ] [ text (lastWithEmoji onlyValues) ]
+            ]
 
 
 viewFeedback : Maybe Feedback -> Html Msg

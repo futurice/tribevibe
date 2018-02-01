@@ -8,18 +8,19 @@ const app = Main.embed(document.getElementById('root'));
 
 registerServiceWorker();
 
-app.ports.drawGraph.subscribe(function (data) {
+app.ports.drawGraph.subscribe(function (engagement) {
+    const values = engagement.values.map(v => v.value);
     // Hack to draw to graph after the element is present
-    const minValue = Math.floor(Math.min.apply(null, data[0].values) - 1);
-    const maxValue = Math.ceil(Math.max.apply(null, data[0].values) + 1);
+    const minValue = Math.floor(Math.min.apply(null, values) - 1);
+    const maxValue = Math.ceil(Math.max.apply(null, values) + 1);
     // Dirty trick to avoid lodash.range(maxValue - minValue)
-    const yTicks = Array((maxValue - minValue) * 2).fill().map((_, i) => ({ value: minValue + (i + 1) * 0.5 }));
+    const yTicks = [] // Array((maxValue - minValue) * 2).fill().map((_, i) => ({ value: minValue + (i + 1) * 0.5 }));
     console.log(minValue, maxValue, yTicks);
     setTimeout(() => C3.generate({
         bindto: '#graph-container',
         data: {
           columns: [
-            ['engagement', ...data[0].values],
+            ['engagement', ...values],
           ],
           type: 'spline',
         },
@@ -45,6 +46,6 @@ app.ports.drawGraph.subscribe(function (data) {
             }
         },
     }), 500);
-    console.table(data);
+    console.table(engagement);
     console.log('Drawing scam values because of missing Engagement'); 
 });

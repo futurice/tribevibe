@@ -50,7 +50,7 @@ update msg model =
                         dash =
                             { dashboard | feedbacks = feedbacks }
                     in
-                        ( { model | dashboard = Just dash }, drawGraph dashboard.metrics )
+                        ( { model | dashboard = Just dash }, drawGraph dashboard.engagement )
 
         ReceiveDashboard (Err error) ->
             case error of
