@@ -1,5 +1,6 @@
 FROM nginx
 COPY build /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/tribevibe.conf
+COPY nginx.template /etc/nginx/conf.d/nginx.template
 
 EXPOSE 8080
+CMD /bin/bash -c "envsubst < /etc/nginx/conf.d/nginx.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
