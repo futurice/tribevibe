@@ -14,7 +14,7 @@ app.ports.drawGraph.subscribe(function (engagement) {
     const minValue = Math.floor(Math.min.apply(null, values) - 1);
     const maxValue = Math.ceil(Math.max.apply(null, values) + 1);
     // Dirty trick to avoid lodash.range(maxValue - minValue)
-    const yTicks = [] // Array((maxValue - minValue) * 2).fill().map((_, i) => ({ value: minValue + (i + 1) * 0.5 }));
+    const yTicks = Array((maxValue - minValue) * 2).fill().map((_, i) => ({ value: minValue + (i + 1) * 0.5 }));
     console.log(minValue, maxValue, yTicks);
     setTimeout(() => C3.generate({
         bindto: '#graph-container',
@@ -29,8 +29,8 @@ app.ports.drawGraph.subscribe(function (engagement) {
         },
         axis: {
             y: {
-                min: minValue,
-                max: maxValue,
+                min: Math.max(0, minValue),
+                max: Math.min(10, maxValue),
                 padding: {
                     top:0, 
                     bottom:0
