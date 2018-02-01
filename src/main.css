@@ -286,6 +286,16 @@ ul li {
   fill: none;
 }
 
+.c3-axis-x, .c3-axis-y {
+  stroke: #868686;
+  fill: #868686;
+}
+
+.c3-grid line {
+  stroke: #e8e8e8;
+  fill: none;
+}
+
 .feedback__replies {
   padding-left: 0.5rem;
   border-left: 5px solid rgba(204, 211, 229, 0.34);
