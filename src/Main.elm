@@ -41,16 +41,14 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         ReceiveDashboard (Ok dashboard) ->
-            case dashboard.feedbacks of
-                [] ->
-                    ( { model | dashboard = Just dashboard }, Cmd.none )
+            let
+                feedbacks =
+                    List.append dashboard.feedbacks.positive dashboard.feedbacks.constructive
 
-                feedbacks ->
-                    let
-                        dash =
-                            { dashboard | feedbacks = feedbacks }
-                    in
-                        ( { model | dashboard = Just dash }, drawGraph dashboard.engagement )
+                dash =
+                    Dashboard dashboard.engagement dashboard.engagements dashboard.metrics feedbacks
+            in
+                ( { model | dashboard = Just dash }, drawGraph dashboard.engagement )
 
         ReceiveDashboard (Err error) ->
             case error of

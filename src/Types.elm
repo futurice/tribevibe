@@ -27,6 +27,12 @@ type alias Reply =
     }
 
 
+type alias TypedFeedbacks =
+    { positive : List Feedback
+    , constructive : List Feedback
+    }
+
+
 type alias Feedbacks =
     List Feedback
 
@@ -45,6 +51,14 @@ type alias Dashboard =
     , engagements : Engagements
     , metrics : List Metric
     , feedbacks : List Feedback
+    }
+
+
+type alias TempDashboard =
+    { engagement : Metric
+    , engagements : Engagements
+    , metrics : List Metric
+    , feedbacks : TypedFeedbacks
     }
 
 

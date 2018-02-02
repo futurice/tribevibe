@@ -8,14 +8,14 @@ import Types exposing (..)
 -- Dashboard decoders
 
 
-decodeDashboard : Decoder Dashboard
+decodeDashboard : Decoder TempDashboard
 decodeDashboard =
     decode
-        Dashboard
+        TempDashboard
         |> required "engagement" (decodeMetricValue)
         |> required "engagements" (Decode.list decodeEngagement)
         |> required "metrics" (Decode.list decodeMetricValue)
-        |> required "feedbacks" (Decode.list decodeFeedback)
+        |> required "feedbacks" (decodeFeedbacks)
 
 
 decodeEngagement : Decoder Engagement
@@ -41,6 +41,14 @@ decodeMetricValue =
         |> required "id" Decode.string
         |> required "name" Decode.string
         |> required "values" (Decode.list decodeMetricDataPoint)
+
+
+decodeFeedbacks : Decoder TypedFeedbacks
+decodeFeedbacks =
+    decode
+        TypedFeedbacks
+        |> required "positive" (Decode.list decodeFeedback)
+        |> required "constructive" (Decode.list decodeFeedback)
 
 
 decodeFeedback : Decoder Feedback

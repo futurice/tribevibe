@@ -1,12 +1,12 @@
 module Messages exposing (..)
 
 import Http
-import Types exposing (Dashboard)
+import Types exposing (TempDashboard)
 import Time exposing (Time)
 import Navigation exposing (Location)
 
 
 type Msg
-    = ReceiveDashboard (Result Http.Error Dashboard)
+    = ReceiveDashboard (Result Http.Error TempDashboard)
     | Tick Time
     | LocationChange Location
