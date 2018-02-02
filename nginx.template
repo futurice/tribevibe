@@ -2,7 +2,7 @@ server {
     listen 8080;
 
     location /api {
-        proxy_pass https://76844865.ngrok.io/api;
+        proxy_pass ${BACKEND_HOST}/api;
     }
 
     root /usr/share/nginx/html;

@@ -8,10 +8,16 @@ type alias Model =
     }
 
 
+type alias MetricDataPoint =
+    { date : String
+    , value : Float
+    }
+
+
 type alias Metric =
     { id : String
     , name : String
-    , values : List Float
+    , values : List MetricDataPoint
     }
 
 
@@ -35,7 +41,8 @@ type alias Feedback =
 
 
 type alias Dashboard =
-    { engagements : Engagements
+    { engagement : Metric
+    , engagements : Engagements
     , metrics : List Metric
     , feedbacks : List Feedback
     }

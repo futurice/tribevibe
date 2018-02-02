@@ -12,6 +12,7 @@ decodeDashboard : Decoder Dashboard
 decodeDashboard =
     decode
         Dashboard
+        |> required "engagement" (decodeMetricValue)
         |> required "engagements" (Decode.list decodeEngagement)
         |> required "metrics" (Decode.list decodeMetricValue)
         |> required "feedbacks" (Decode.list decodeFeedback)
@@ -25,13 +26,21 @@ decodeEngagement =
         |> required "value" Decode.float
 
 
+decodeMetricDataPoint : Decoder MetricDataPoint
+decodeMetricDataPoint =
+    decode
+        MetricDataPoint
+        |> required "date" Decode.string
+        |> required "value" Decode.float
+
+
 decodeMetricValue : Decoder Metric
 decodeMetricValue =
     decode
         Metric
         |> required "id" Decode.string
         |> required "name" Decode.string
-        |> required "values" (Decode.list Decode.float)
+        |> required "values" (Decode.list decodeMetricDataPoint)
 
 
 decodeFeedback : Decoder Feedback
