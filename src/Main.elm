@@ -3,6 +3,8 @@ module Main exposing (..)
 import Http
 import Html exposing (Html, text, div)
 import Navigation exposing (Location)
+import Random exposing (..)
+import Random.List exposing (..)
 import Routes exposing (parseLocation)
 import Time exposing (Time, second)
 import Types exposing (..)
@@ -46,9 +48,26 @@ update msg model =
                     List.append dashboard.feedbacks.positive dashboard.feedbacks.constructive
 
                 dash =
-                    Dashboard dashboard.engagement dashboard.engagements dashboard.metrics feedbacks
+                    Dashboard dashboard.engagement dashboard.engagements dashboard.metrics []
             in
-                ( { model | dashboard = Just dash }, drawGraph dashboard.engagement )
+                ( { model | dashboard = Just dash }
+                , Cmd.batch
+                    [ drawGraph dashboard.engagement
+                    , Random.generate FeedbacksShuffled (Random.List.shuffle feedbacks)
+                    ]
+                )
+
+        FeedbacksShuffled feedbacks ->
+            case model.dashboard of
+                Just dash ->
+                    let
+                        d =
+                            { dash | feedbacks = feedbacks }
+                    in
+                        ( { model | dashboard = Just d }, Cmd.none )
+
+                Nothing ->
+                    ( model, Cmd.none )
 
         ReceiveDashboard (Err error) ->
             case error of
