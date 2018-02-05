@@ -48,8 +48,8 @@ getEmojiForValue value =
 getClassNamesForValue : Float -> String
 getClassNamesForValue value =
     if value > 7.5 then
-        "card card--green"
+        "card card--small card--green"
     else if value > 4.5 then
-        "card card--yellow"
+        "card card--small card--yellow"
     else
-        "card card--red"
+        "card card--small card--red"

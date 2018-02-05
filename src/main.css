@@ -72,12 +72,6 @@ ul li {
   opacity: 0.3;
 }
 
-@media screen and (min-width: 700px) {
-  .dashboard__top {
-    flex-wrap: nowrap;
-  }
-}
-
 .dashboard__bottom {
   position: relative;
   z-index: 200;
@@ -90,138 +84,6 @@ ul li {
 @media screen and (min-width: 1200px) {
   .dashboard__bottom {
     justify-content: space-between;
-  }
-}
-
-.cards {
-  display: flex;
-}
-
-.card {
-  width: calc(100% - 20px);
-  margin: 10px;
-  background: #ffffff;
-  box-shadow: 0 20px 40px 0 #d5dae4;
-  border-radius: 5px;
-  text-align: center;
-}
-
-@media screen and (min-width: 400px) {
-  .card {
-    width: calc(50% - 20px);
-  }
-}
-
-@media screen and (min-width: 500px) {
-  .card {
-    width: calc(33.33% - 20px);
-  }
-}
-
-@media screen and (min-width: 600px) {
-  .card {
-    width: calc(25% - 20px);
-  }
-}
-
-@media screen and (min-width: 1200px) {
-  .card {
-    width: calc(20% - 20px);
-  }
-}
-
-.card--big {
-  position: relative;
-  height: 31.75rem;
-  padding: 20px;
-  text-align: left;
-  overflow: hidden;
-}
-
-.card--graph {
-  width: calc(40% - 20px);
-  padding: 0;
-}
-
-.card--feedback {
-  width: calc(40% - 20px);
-  overflow: hidden;
-}
-
-.card--feedback::after {
-  content: "";
-  display: block;
-  position: absolute;
-  z-index: 100;
-  height: 70px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(0deg, white, transparent);
-}
-
-.elm-plot__series {
-  stroke-width: 7px;
-}
-
-@media screen and (max-width: 700px) {
-  .card--feedback {
-    height: auto;
-  }
-}
-
-.card--red .card__header {
-  background: #e55449;
-}
-
-.card--yellow .card__header {
-  background: #e88934;
-}
-
-.card--green .card__header {
-  background: #35b66f;
-}
-
-.card__header {
-  padding: 15px;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  background: #6081e7;
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-@media screen and (min-width: 1200px) {
-  .card__header {
-    font-size: 16px;
-  }
-}
-
-@media screen and (min-width: 1800px) {
-  .card__header {
-    font-size: 24px;
-  }
-}
-
-.card__title {
-  margin-bottom: 0.75rem;
-}
-
-.card__body {
-  margin: 1rem 0;
-  font-size: 2rem;
-}
-
-@media screen and (min-width: 1200px) {
-  .card__body {
-    font-size: 50px;
-  }
-}
-
-@media screen and (min-width: 1800px) {
-  .card__body {
-    font-size: 75px;
   }
 }
 
@@ -271,6 +133,10 @@ ul li {
   margin-right: 10px;
 }
 
+.engagements-item__link {
+  color: #3b58b1;
+}
+
 .graph__wrapper {
   padding: 10px;
 }
@@ -282,13 +148,14 @@ ul li {
 
 .c3-lines-engagement {
   stroke-width: 5px;
-  stroke: #BADA55;
+  stroke: #bada55;
   fill: none;
 }
 
-.c3-axis-x, .c3-axis-y {
-  stroke: #868686;
-  fill: #868686;
+.c3-axis-x,
+.c3-axis-y {
+  stroke: transparent;
+  fill: transparent;
 }
 
 .c3-grid line {

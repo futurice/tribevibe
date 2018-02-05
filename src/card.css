@@ -1,0 +1,156 @@
+.cards {
+  display: flex;
+}
+
+.card {
+  margin: 10px;
+  background: #ffffff;
+  box-shadow: 0 20px 40px 0 #d5dae4;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.card--small {
+  width: calc(100% - 20px);
+}
+
+@media screen and (min-width: 450px) {
+  .card--small {
+    width: calc(50% - 20px);
+  }
+}
+
+@media screen and (min-width: 700px) {
+  .card--small {
+    width: calc(33.33% - 20px);
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .card--small {
+    width: calc(20% - 20px);
+  }
+}
+
+.card--big {
+  width: 100%;
+  position: relative;
+  padding: 20px;
+  text-align: left;
+  overflow: hidden;
+}
+
+.card--graph {
+  padding: 0;
+}
+
+.card--feedback {
+  width: 100%;
+  overflow: hidden;
+}
+
+.card--feedback::after {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: 100;
+  height: 70px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(0deg, white, transparent);
+}
+
+@media screen and (min-width: 800px) {
+  .card--graph {
+    width: calc(70% - 20px);
+  }
+
+  .card--engagement {
+    width: calc(30% - 20px);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .card--big {
+    height: 35.5rem;
+  }
+
+  .card--graph {
+    width: calc(40% - 20px);
+  }
+
+  .card--engagement {
+    width: calc(20% - 20px);
+    font-size: 1.2rem;
+  }
+
+  .card--feedback {
+    width: calc(40% - 20px);
+    font-size: 1.2rem;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .card--engagement,
+  .card--feedback {
+    height: auto;
+  }
+}
+
+.card--red .card__header {
+  background: #e55449;
+}
+
+.card--yellow .card__header {
+  background: #e88934;
+}
+
+.card--green .card__header {
+  background: #35b66f;
+}
+
+.card__header {
+  padding: 15px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background: #6081e7;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+@media screen and (min-width: 1200px) {
+  .card__header {
+    font-size: 16px;
+  }
+}
+
+@media screen and (min-width: 1800px) {
+  .card__header {
+    font-size: 24px;
+  }
+}
+
+.card__title {
+  margin-bottom: 0.75rem;
+}
+
+.card__body {
+  margin: 1rem 0;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #6b7786;
+}
+
+@media screen and (min-width: 1200px) {
+  .card__body {
+    font-size: 50px;
+  }
+}
+
+@media screen and (min-width: 1800px) {
+  .card__body {
+    font-size: 75px;
+  }
+}

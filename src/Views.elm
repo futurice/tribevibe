@@ -1,7 +1,7 @@
 module Views exposing (..)
 
-import Html exposing (Html, text, header, ul, ol, li, h2, h3, p, div, span)
-import Html.Attributes exposing (class)
+import Html exposing (Html, text, header, ul, ol, li, h2, h3, p, div, span, a)
+import Html.Attributes exposing (class, href)
 import ElmEscapeHtml exposing (unescape)
 import Types exposing (..)
 import Messages exposing (..)
@@ -145,7 +145,7 @@ viewEngagement index engagement =
     li [ class "engagements-item" ]
         [ div []
             [ span [ class "engagements-item__index" ] [ text ((toString (index + 1)) ++ ".") ]
-            , span [] [ text engagement.name ]
+            , span [] [ a [ class "engagements-item__link", href ("#/" ++ engagement.name) ] [ text engagement.name ] ]
             ]
         , div [] [ text (toString engagement.value) ]
         ]
