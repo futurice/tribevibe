@@ -136,7 +136,7 @@ view model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Time.every (5 * second) Tick
+    Time.every (60 * second) Tick
 
 
 main : Program Never Model Msg
