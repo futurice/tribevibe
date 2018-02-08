@@ -9,6 +9,7 @@ matchers : Parser (Route -> a) a
 matchers =
     oneOf
         [ map FutuDashboard top
+        , map Feedbacks (s "feedbacks" </> string)
         , map TribeDashboard string
         ]
 

@@ -1,5 +1,6 @@
 import "./main.css";
 import "./card.css";
+import "./feedback.css";
 import C3 from "c3";
 
 import { Main } from "./Main.elm";

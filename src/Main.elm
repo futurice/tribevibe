@@ -8,15 +8,17 @@ import Random.List exposing (..)
 import Routes exposing (parseLocation)
 import Time exposing (Time, second)
 import Types exposing (..)
-import Commands exposing (getDashboard)
+import Commands exposing (getDashboard, getFeedbacks)
 import Messages exposing (..)
 import Views exposing (viewTribe, viewError)
+import FeedbacksView exposing (viewFeedbacks)
 import Ports exposing (drawGraph)
 
 
 initialModel : Route -> Model
 initialModel route =
     { dashboard = Nothing
+    , feedbacks = Nothing
     , error = Nothing
     , route = route
     }
@@ -33,10 +35,21 @@ init location =
                 TribeDashboard tribe ->
                     tribe
 
+                Feedbacks tribe ->
+                    tribe
+
                 _ ->
                     ""
+
+        command =
+            case currentRoute of
+                Feedbacks tribe ->
+                    (getFeedbacks tribeParam)
+
+                _ ->
+                    (getDashboard tribeParam)
     in
-        ( initialModel currentRoute, getDashboard tribeParam )
+        ( initialModel currentRoute, command )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -86,6 +99,26 @@ update msg model =
                 Http.BadPayload error _ ->
                     ( { model | error = Just error }, Cmd.none )
 
+        ReceiveFeedbacks (Ok feedbacks) ->
+            ( { model | feedbacks = Just feedbacks }, Cmd.none )
+
+        ReceiveFeedbacks (Err error) ->
+            case error of
+                Http.BadUrl error ->
+                    ( { model | error = Just error }, Cmd.none )
+
+                Http.Timeout ->
+                    ( { model | error = Just "HTTP Timeout" }, Cmd.none )
+
+                Http.NetworkError ->
+                    ( { model | error = Just "Network Error" }, Cmd.none )
+
+                Http.BadStatus _ ->
+                    ( { model | error = Just "Bad Status" }, Cmd.none )
+
+                Http.BadPayload error _ ->
+                    ( { model | error = Just error }, Cmd.none )
+
         -- Show next feedback
         Tick newTime ->
             case model.dashboard of
@@ -115,10 +148,21 @@ update msg model =
                         TribeDashboard tribe ->
                             tribe
 
+                        Feedbacks tribe ->
+                            tribe
+
                         _ ->
                             ""
+
+                command =
+                    case newRoute of
+                        Feedbacks tribe ->
+                            (getFeedbacks tribeParam)
+
+                        _ ->
+                            (getDashboard tribeParam)
             in
-                ( { model | route = newRoute }, getDashboard tribeParam )
+                ( { model | route = newRoute }, command )
 
 
 view : Model -> Html Msg
@@ -129,6 +173,9 @@ view model =
 
         TribeDashboard tribe ->
             viewTribe model tribe
+
+        Feedbacks tribe ->
+            viewFeedbacks model tribe
 
         NotFound ->
             viewTribe model ""
