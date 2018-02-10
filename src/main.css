@@ -147,15 +147,21 @@ ul li {
 }
 
 .c3-lines-engagement {
-  stroke-width: 5px;
-  stroke: #bada55;
+  stroke-width: 10px;
   fill: none;
 }
 
 .c3-axis-x,
 .c3-axis-y {
-  stroke: transparent;
   fill: transparent;
+}
+
+.c3-axis-x > .tick {
+  fill: #6b7786;
+}
+
+.c3-axis-y > .tick {
+  fill: #6b7786;
 }
 
 .c3-grid line {
