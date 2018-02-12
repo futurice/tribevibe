@@ -14,6 +14,7 @@ app.ports.drawGraph.subscribe(function(engagement) {
   const values = sortedValues.map(v => v.value);
   const timeStamps = sortedValues.map(v => v.date);
 
+  const xTickCount = Math.ceil(values.length / 4); // Divide roughly to months shown
   // Hack to draw to graph after the element is present
   const minValue = Math.floor(Math.min.apply(null, values) - 1);
   const maxValue = Math.ceil(Math.max.apply(null, values) + 1);
@@ -31,9 +32,11 @@ app.ports.drawGraph.subscribe(function(engagement) {
     }
     const absoluteHeight = svg.querySelector('.c3-grid-lines').getBoundingClientRect().height;
 
-    const projectedHeight = absoluteHeight * (10/(maxValue - minValue));
+    const c3ScamMargin = 1; // C3 does not honor min and max given but shows a bit more
+
+    const projectedHeight = absoluteHeight * (10/(maxValue - minValue + c3ScamMargin));
     const step = projectedHeight / 10;
-    const y0 = -(10 - maxValue) * step;
+    const y0 = -(10 - maxValue - c3ScamMargin) * step;
 
     /*
       Stops:
@@ -43,12 +46,11 @@ app.ports.drawGraph.subscribe(function(engagement) {
       100%: 0
     */
     svgDefs.innerHTML += `<linearGradient id="engagement-gradient" x1="0%" x2="0%" y1="${y0}px" y2="${y0 + projectedHeight}px" gradientUnits="userSpaceOnUse">
-    <stop offset="10%" stop-color="#00FF00"></stop>
-    <stop offset="25%" stop-color="#fffb00"></stop>
-    <stop offset="40%" stop-color="#FF0000"></stop>
-    <stop offset="100%" stop-color="#000000">
+    <stop offset="15%" stop-color="#27ae61"></stop>
+    <stop offset="25%" stop-color="#e77e22"></stop>
+    <stop offset="40%" stop-color="#e4493c"></stop>
+    <stop offset="100%" stop-color="#000000"></stop>
     </linearGradient>`
-
   };
 
   requestAnimationFrame(() => {
@@ -79,7 +81,10 @@ app.ports.drawGraph.subscribe(function(engagement) {
         x: {
           type: 'timeseries',
           tick: {
-            format: '%-m/%-y',
+            format: '%B %-Y',
+            culling: {
+              max: xTickCount,
+            }
           }
         },
         y: {
