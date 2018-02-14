@@ -5,16 +5,18 @@ import C3 from "c3";
 import { Main } from "./Main.elm";
 
 // Unregister service workers
-navigator.serviceWorker.getRegistrations().then(function(registrations) {
-  for (let registration of registrations) {
-    registration.unregister();
-  }
-});
+if (navigator && navigator.serviceWorker) {
+  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+    for (let registration of registrations) {
+      registration.unregister();
+    }
+  });
+}
 
 const app = Main.embed(document.getElementById("root"));
 
 app.ports.drawGraph.subscribe(function(engagement) {
-  const sortedValues = engagement.values.sort((a, b) => a.date > b.date)
+  const sortedValues = engagement.values.sort((a, b) => a.date > b.date);
   const values = sortedValues.map(v => v.value);
   const timeStamps = sortedValues.map(v => v.date);
 
@@ -28,17 +30,20 @@ app.ports.drawGraph.subscribe(function(engagement) {
     .map((_, i) => ({ value: minValue + i * 0.5 }));
 
   const chartRendered = () => {
-    const svg = document.getElementById('graph-container').querySelector('svg');
-    const svgDefs = svg.querySelector('defs');
-    const existingGradient = svgDefs.getElementsByTagName('linearGradient');
+    const svg = document.getElementById("graph-container").querySelector("svg");
+    const svgDefs = svg.querySelector("defs");
+    const existingGradient = svgDefs.getElementsByTagName("linearGradient");
     if (existingGradient.length > 0) {
       svgDefs.removeChild(existingGradient[0]);
     }
-    const absoluteHeight = svg.querySelector('.c3-grid-lines').getBoundingClientRect().height;
+    const absoluteHeight = svg
+      .querySelector(".c3-grid-lines")
+      .getBoundingClientRect().height;
 
     const c3ScamMargin = 1; // C3 does not honor min and max given but shows a bit more
 
-    const projectedHeight = absoluteHeight * (10/(maxValue - minValue + c3ScamMargin));
+    const projectedHeight =
+      absoluteHeight * (10 / (maxValue - minValue + c3ScamMargin));
     const step = projectedHeight / 10;
     const y0 = -(10 - maxValue - c3ScamMargin) * step;
 
@@ -49,12 +54,13 @@ app.ports.drawGraph.subscribe(function(engagement) {
       40%: 6.0
       100%: 0
     */
-    svgDefs.innerHTML += `<linearGradient id="engagement-gradient" x1="0%" x2="0%" y1="${y0}px" y2="${y0 + projectedHeight}px" gradientUnits="userSpaceOnUse">
+    svgDefs.innerHTML += `<linearGradient id="engagement-gradient" x1="0%" x2="0%" y1="${y0}px" y2="${y0 +
+      projectedHeight}px" gradientUnits="userSpaceOnUse">
     <stop offset="15%" stop-color="#27ae61"></stop>
     <stop offset="25%" stop-color="#e77e22"></stop>
     <stop offset="40%" stop-color="#e4493c"></stop>
     <stop offset="100%" stop-color="#000000"></stop>
-    </linearGradient>`
+    </linearGradient>`;
   };
 
   requestAnimationFrame(() => {
@@ -65,17 +71,15 @@ app.ports.drawGraph.subscribe(function(engagement) {
         top: 20,
         right: 20,
         bottom: 10,
-        left: 50,
+        left: 50
       },
       legend: {
-        hide: true,
+        hide: true
       },
       data: {
-        x: 'x',
-        xFormat: '%Y-%m-%d',
-        columns: [
-          ["x", ...timeStamps],
-          ["engagement", ...values]],
+        x: "x",
+        xFormat: "%Y-%m-%d",
+        columns: [["x", ...timeStamps], ["engagement", ...values]],
         type: "spline"
       },
       color: {
@@ -83,11 +87,11 @@ app.ports.drawGraph.subscribe(function(engagement) {
       },
       axis: {
         x: {
-          type: 'timeseries',
+          type: "timeseries",
           tick: {
-            format: '%B %-Y',
+            format: "%B %-Y",
             culling: {
-              max: xTickCount,
+              max: xTickCount
             }
           }
         },
@@ -100,15 +104,15 @@ app.ports.drawGraph.subscribe(function(engagement) {
         }
       },
       point: {
-        show: false,
+        show: false
       },
       grid: {
         lines: {
-          front: false,
+          front: false
         },
         x: {
           show: false,
-          lines: timeStamps.map(s => ({ value: s })),
+          lines: timeStamps.map(s => ({ value: s }))
         },
         y: {
           lines: yTicks
