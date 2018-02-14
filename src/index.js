@@ -4,6 +4,13 @@ import C3 from "c3";
 
 import { Main } from "./Main.elm";
 
+// Unregister service workers
+navigator.serviceWorker.getRegistrations().then(function(registrations) {
+  for (let registration of registrations) {
+    registration.unregister();
+  }
+});
+
 const app = Main.embed(document.getElementById("root"));
 
 app.ports.drawGraph.subscribe(function(engagement) {
