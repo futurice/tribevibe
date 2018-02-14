@@ -54,7 +54,7 @@ viewTribe : Model -> String -> Html Msg
 viewTribe model tribe =
     div []
         [ header [ class "header" ]
-            [ span [] [ text "Tribevibe" ]
+            [ a [ href "#/", class "header__logo" ] [ text "Tribevibe" ]
             , span [ class "header__tribe" ] [ text tribe ]
             ]
         , div [ class "container" ]

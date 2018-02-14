@@ -42,6 +42,15 @@ header span {
   margin-right: 0.7rem;
 }
 
+.header__logo {
+  color: white;
+  text-decoration: none;
+}
+
+.header__logo:hover {
+  text-decoration: underline;
+}
+
 .header__tribe {
   opacity: 0.5;
 }
