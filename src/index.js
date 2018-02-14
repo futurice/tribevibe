@@ -3,11 +3,8 @@ import "./card.css";
 import C3 from "c3";
 
 import { Main } from "./Main.elm";
-import registerServiceWorker from "./registerServiceWorker";
 
 const app = Main.embed(document.getElementById("root"));
-
-registerServiceWorker();
 
 app.ports.drawGraph.subscribe(function(engagement) {
   const values = engagement.values.map(v => v.value);
